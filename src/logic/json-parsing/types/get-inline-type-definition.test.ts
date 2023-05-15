@@ -1,5 +1,5 @@
-import { ApiTypeDefinition } from '../../types/swagger-schema.interfaces';
-import { WithRequiredProperty } from '../../types/with-required-property.type';
+import { ApiTypeDefinition } from '../../../types/swagger-schema.interfaces';
+import { WithRequiredProperty } from '../../../types/with-required-property.type';
 
 import { getInlineTypeDefinition } from './get-inline-type-definition';
 

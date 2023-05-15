@@ -153,6 +153,31 @@ describe('getInterfaceMemberDefinition function', () => {
     );
   });
 
+  it('should handle array types with oneOf', () => {
+    const result = getInterfaceMemberDefinition(
+      'cool',
+      ['cool'],
+      {
+        type: 'array',
+        items: {
+          oneOf: [
+            {
+              $ref: '#/components/schemas/InstitutionResponseDto',
+            },
+            {
+              $ref: '#/components/schemas/InstitutionGroupResponseDto',
+            },
+          ],
+        },
+      },
+      true,
+    );
+
+    expect(result).toBe(
+      `  cool: Array<InstitutionResponseDto | InstitutionGroupResponseDto>;\n`,
+    );
+  });
+
   it('should handle enum types', () => {
     const result = getInterfaceMemberDefinition(
       'cool',

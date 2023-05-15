@@ -63,7 +63,7 @@ export interface ApiTypeDefinition {
   type?: string;
   $ref?: string;
   properties?: ApiConditionalUnionTypeDefinition;
-  items?: ApiTypeDefinition;
+  items?: ApiConditionalUnionTypeDefinition;
   required?: Array<string>;
   enum?: Array<string>;
   example?:

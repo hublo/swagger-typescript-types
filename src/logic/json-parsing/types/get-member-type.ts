@@ -1,10 +1,10 @@
-import { ApiTypeDefinition } from '../../types/swagger-schema.interfaces';
-import { displayWarning } from '../cli/console/console.messages';
+import { ApiTypeDefinition } from '../../../types/swagger-schema.interfaces';
+import { displayWarning } from '../../cli/console/console.messages';
+import { getSchemaName } from '../route/get-schema-name';
 
 import { getArrayMemberType } from './get-array-member-type';
 import { getInlineTypeDefinition } from './get-inline-type-definition';
-import { getSchemaName } from './get-schema-name';
-import { mapZodTypes } from './map-zod-types';
+import { mapZodTypes } from './utils/map-zod-types';
 
 export const getMemberType = (
   propName: string,

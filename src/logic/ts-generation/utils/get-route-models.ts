@@ -1,7 +1,7 @@
-import { ApiRouteParameter } from '../../types/swagger-schema.interfaces';
-import { BodyModel } from '../json-parsing/get-body-model';
-import { RouteResponse } from '../json-parsing/get-route-responses';
-import { getSchemaName } from '../json-parsing/get-schema-name';
+import { ApiRouteParameter } from '../../../types/swagger-schema.interfaces';
+import { BodyModel } from '../../json-parsing/route/get-body-model';
+import { RouteResponse } from '../../json-parsing/route/get-route-responses';
+import { getSchemaName } from '../../json-parsing/route/get-schema-name';
 
 const getRouteResponsesModels = (
   responses: Array<RouteResponse>,

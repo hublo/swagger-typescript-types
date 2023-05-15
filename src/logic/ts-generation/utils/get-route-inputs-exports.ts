@@ -1,4 +1,4 @@
-import { BodyModel } from '../json-parsing/get-body-model';
+import { BodyModel } from '../../json-parsing/route/get-body-model';
 
 export const getRouteInputsExports = (bodyModel?: BodyModel): string => {
   if (bodyModel) {

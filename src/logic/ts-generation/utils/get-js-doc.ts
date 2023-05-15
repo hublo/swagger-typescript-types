@@ -1,4 +1,4 @@
-import { splitOnce } from '../util/split-once';
+import { splitOnce } from '../../util/split-once';
 
 export const getJsDoc = (
   id: string,

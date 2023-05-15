@@ -1,4 +1,4 @@
-import { ApiSchemas } from '../../types/swagger-schema.interfaces';
+import { ApiSchemas } from '../../../types/swagger-schema.interfaces';
 
 import { getInterfaceMemberDefinition } from './get-interface-member-definition';
 

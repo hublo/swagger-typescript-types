@@ -1,5 +1,5 @@
-import { RouteResponse } from '../json-parsing/get-route-responses';
-import { capitalize } from '../util/capitalize';
+import { RouteResponse } from '../../json-parsing/route/get-route-responses';
+import { capitalize } from '../../util/capitalize';
 
 const generateConsolidatedExports = (
   array: Array<RouteResponse>,

@@ -3,16 +3,16 @@ import { ensureDir, writeFile } from 'fs-extra';
 import { GenerationResult } from '../../types/generation-result.interface';
 import { ValidatedOpenaApiSchema } from '../../types/swagger-schema.interfaces';
 import { displayWarning } from '../cli/console/console.messages';
-import { getExposedEndpoints } from '../json-parsing/get-exposed-endpoints';
-import { getRoutePath } from '../json-parsing/get-route-path';
-import { getTypesDefinitions } from '../json-parsing/get-types-definitions';
 import { getTypesMocks } from '../json-parsing/mock/get-types-mock';
+import { getExposedEndpoints } from '../json-parsing/route/get-exposed-endpoints';
+import { getRoutePath } from '../json-parsing/route/get-route-path';
+import { getTypesDefinitions } from '../json-parsing/types/get-types-definitions';
 import { splitOnce } from '../util/split-once';
 
-import { getJsDoc } from './get-js-doc';
-import { getRouteInputsExports } from './get-route-inputs-exports';
-import { getRouteModels } from './get-route-models';
-import { getRouteOutputsExports } from './get-route-outputs-exports';
+import { getJsDoc } from './utils/get-js-doc';
+import { getRouteInputsExports } from './utils/get-route-inputs-exports';
+import { getRouteModels } from './utils/get-route-models';
+import { getRouteOutputsExports } from './utils/get-route-outputs-exports';
 
 export const generateTypesDefinitions = async (
   outPath: string,

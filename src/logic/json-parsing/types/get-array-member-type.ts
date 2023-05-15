@@ -1,12 +1,11 @@
 import { ApiTypeDefinition } from '../../../types/swagger-schema.interfaces';
 import { WithRequiredProperty } from '../../../types/with-required-property.type';
 import { displayWarning } from '../../cli/console/console.messages';
+import { getSchemaName } from '../route/get-schema-name';
 
-import { getExampleFromType } from './get-example-from-type';
-import { getInlineTypeMock } from './get-inline-type-mock';
-import { getMockObjectNameFromPath } from './get-mock-object-name';
+import { getInlineTypeDefinition } from './get-inline-type-definition';
 
-export const getArrayMemberMock = (
+export const getArrayMemberType = (
   propName: string,
   property: WithRequiredProperty<ApiTypeDefinition, 'items'>,
 ): string | undefined => {
@@ -14,29 +13,18 @@ export const getArrayMemberMock = (
     const items = property.items;
     const ref = (items as ApiTypeDefinition).$ref;
     if (ref !== undefined) {
-      return `[${getMockObjectNameFromPath(ref)}]`;
-    }
-
-    const example = (items as ApiTypeDefinition).example;
-    if (example) {
-      try {
-        return `${JSON.stringify(property.example)}`;
-      } catch (_) {
-        displayWarning(
-          `Unable to stringify the example provided for ${propName}`,
-        );
-      }
+      return `Array<${getSchemaName(ref)}>`;
     }
 
     const type = (items as ApiTypeDefinition).type;
     const properties = (items as ApiTypeDefinition).properties;
     const required = (items as ApiTypeDefinition).required;
     if (type === 'object' && properties && required) {
-      return `[${getInlineTypeMock(items as never)}]`;
+      return `Array<${getInlineTypeDefinition(items as never)}>`;
     }
 
     if (type !== undefined) {
-      return `[${getExampleFromType(propName, type)}]`;
+      return `Array<${type}>`;
     }
 
     if ((items as { oneOf: Array<ApiTypeDefinition> }).oneOf) {
@@ -44,7 +32,9 @@ export const getArrayMemberMock = (
 
       const refs = oneOf.map((el) => el.$ref).filter((el) => el !== undefined);
       if (refs.length > 0) {
-        return `[${getMockObjectNameFromPath(refs[0] as string)}]`;
+        return `Array<${(refs as string[])
+          .map((el) => getSchemaName(el))
+          .join(' | ')}>`;
       }
     }
   }
