@@ -268,3 +268,7 @@ const importsNotUsedAsValues = true
 
 await generateTypesDefinitions(outPath, schema, importsNotUsedAsValues);
 ```
+
+#### 🌀 Versions
+
+- 3.4.0 : Can handle oneOf in an array
