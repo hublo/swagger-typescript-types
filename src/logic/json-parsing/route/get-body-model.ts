@@ -45,8 +45,10 @@ export const getBodyModel = (
 
   if (schema.type) {
     if (schema.type === 'array' && schema.items) {
-      if (schema.items.$ref) {
-        const modelName = getSchemaName(schema.items.$ref);
+      const items = schema.items;
+      const ref = (items as ApiTypeDefinition).$ref;
+      if (ref) {
+        const modelName = getSchemaName(ref);
         return {
           model: `Array<${modelName}>`,
           underlyingModel: modelName,
@@ -54,9 +56,10 @@ export const getBodyModel = (
         };
       }
 
-      if (schema.items.type) {
+      const type = (items as ApiTypeDefinition).type;
+      if (type) {
         return {
-          model: `Array<${schema.items.type}>`,
+          model: `Array<${type}>`,
           isPrimitiveModel: true,
         };
       }

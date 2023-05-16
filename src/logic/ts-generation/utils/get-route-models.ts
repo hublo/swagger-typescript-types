@@ -1,4 +1,7 @@
-import { ApiRouteParameter } from '../../../types/swagger-schema.interfaces';
+import {
+  ApiRouteParameter,
+  ApiTypeDefinition,
+} from '../../../types/swagger-schema.interfaces';
 import { BodyModel } from '../../json-parsing/route/get-body-model';
 import { RouteResponse } from '../../json-parsing/route/get-route-responses';
 import { getSchemaName } from '../../json-parsing/route/get-schema-name';
@@ -29,8 +32,11 @@ const getRouteParametersModels = (
     if (curr.schema.$ref !== undefined) {
       return [...acc, getSchemaName(curr.schema.$ref)];
     }
-    if (curr.schema.items?.$ref !== undefined) {
-      return [...acc, getSchemaName(curr.schema.items.$ref)];
+
+    const items = curr.schema.items;
+    const ref = (items as ApiTypeDefinition)?.$ref;
+    if (ref !== undefined) {
+      return [...acc, getSchemaName(ref)];
     }
 
     return acc;

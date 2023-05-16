@@ -16,18 +16,20 @@ export const getRouteResponseModel = (
       isPrimitiveModel: false,
     };
   } else if (type === 'array' && items) {
-    if (items.$ref) {
-      const modelName = getSchemaName(items.$ref);
+    const ref = (items as ApiTypeDefinition).$ref;
+    const type = (items as ApiTypeDefinition).type;
+    if (ref) {
+      const modelName = getSchemaName(ref);
       return {
         statusCode,
         model: `Array<${modelName}>`,
         underlyingModel: modelName,
         isPrimitiveModel: false,
       };
-    } else if (items.type) {
+    } else if (type) {
       return {
         statusCode,
-        model: `Array<${items.type}>`,
+        model: `Array<${type}>`,
         isPrimitiveModel: true,
       };
     }

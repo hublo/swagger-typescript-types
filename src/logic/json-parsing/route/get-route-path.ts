@@ -17,10 +17,13 @@ const getModel = (
 
   if (schema.type) {
     if (schema.type === 'array' && schema.items) {
-      if (schema.items.$ref) {
-        return `Array<${getSchemaName(schema.items.$ref)}>`;
-      } else if (schema.items.type) {
-        return `Array<${schema.items.type}>`;
+      const items = schema.items;
+      const ref = (items as ApiTypeDefinition).$ref;
+      const type = (items as ApiTypeDefinition).type;
+      if (ref) {
+        return `Array<${getSchemaName(ref)}>`;
+      } else if (type) {
+        return `Array<${type}>`;
       }
 
       displayWarning(

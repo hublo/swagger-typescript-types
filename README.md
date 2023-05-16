@@ -45,9 +45,33 @@ export interface DevDto {
 
 But what if we could just extract these models and generate types instead? Oh...! 😏
 
+## Versions
+
+- 3.4.0 : Can handle oneOf in an array
+
 ### 🔶 Disclaimer
 
 🚨 I wrote this for a stack based on [nestjs](https://nestjs.com/) for the backend and [react-query](https://react-query.tanstack.com/) for the frontend, so this tool may or may not suit your needs. If you think about another usecase, do not hesitate to drop an issue 🙃.
+
+## Publish a new version of the package
+
+1. Run pnpm build
+
+```bash
+pnpm build
+```
+
+2. Login on npm
+
+```bash
+npm login
+```
+
+3. Publish your package on npm
+
+```bash
+npm publish
+```
 
 ## ⚡ Installation
 
@@ -268,7 +292,3 @@ const importsNotUsedAsValues = true
 
 await generateTypesDefinitions(outPath, schema, importsNotUsedAsValues);
 ```
-
-#### 🌀 Versions
-
-- 3.4.0 : Can handle oneOf in an array
