@@ -50,11 +50,15 @@ export const getRouteModels = (
   const parametersModels = getRouteParametersModels(parameters);
   const responsesModels = getRouteResponsesModels(responses);
 
-  const models = [...parametersModels, ...responsesModels];
+  let models = [...parametersModels, ...responsesModels];
 
   if (bodyModel && !bodyModel.isPrimitiveModel) {
     models.unshift(bodyModel.underlyingModel ?? bodyModel.model);
   }
+
+  models = models.filter(
+    (model) => model !== undefined && model !== null && model !== '',
+  );
 
   return models;
 };

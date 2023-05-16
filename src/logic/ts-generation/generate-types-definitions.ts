@@ -61,6 +61,9 @@ export const generateTypesDefinitions = async (
       `${controllerPath}/${routeName}.ts`,
       `/* eslint-disable */\n/* tslint:disable */\n\n${doc}\n\n${maybeImport}${routePath}\n\n${inputsExports}${outputExports}\n`,
     );
+
+    //const providerPath = `${outPath}/${controller}/provider`;
+    //await ensureDir(providerPath);
   }
 
   if (typesDefinition.length > 0) {

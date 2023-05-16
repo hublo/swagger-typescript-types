@@ -48,6 +48,7 @@ But what if we could just extract these models and generate types instead? Oh...
 ## Versions
 
 - 3.4.0 : Can handle oneOf in an array
+- 3.4.1 : Make sure models are all defined in getRouteModels
 
 ### 🔶 Disclaimer
 
