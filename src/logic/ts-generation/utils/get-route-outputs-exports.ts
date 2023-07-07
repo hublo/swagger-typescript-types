@@ -14,10 +14,15 @@ const generateConsolidatedExports = (
     arr.push('never');
   }
 
-  return `export type ${route}${outcome} = ${Array.from(new Set(arr)).join(
-    ' | ',
-  )};`;
+  return `export type ${generateOutcomeType(route, outcome)} = ${Array.from(
+    new Set(arr),
+  ).join(' | ')};`;
 };
+
+export const generateOutcomeType = (
+  route: string,
+  outcome: 'Success' | 'Error',
+): string => `${route}${outcome}`;
 
 export const getRouteOutputsExports = (
   routeName: string,

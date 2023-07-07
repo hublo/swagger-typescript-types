@@ -50,9 +50,7 @@
             }
           }
         },
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/logged-user/chapters": {
@@ -93,9 +91,7 @@
             }
           }
         },
-        "tags": [
-          "Logged users"
-        ],
+        "tags": ["Logged users"],
         "security": [
           {
             "bearer": []
@@ -141,9 +137,7 @@
             }
           }
         },
-        "tags": [
-          "Logged users"
-        ],
+        "tags": ["Logged users"],
         "security": [
           {
             "bearer": []
@@ -198,9 +192,7 @@
             }
           }
         },
-        "tags": [
-          "Chapters"
-        ],
+        "tags": ["Chapters"],
         "security": [
           {
             "bearer": []
@@ -256,9 +248,7 @@
             }
           }
         },
-        "tags": [
-          "Chapters"
-        ],
+        "tags": ["Chapters"],
         "security": [
           {
             "bearer": []
@@ -291,9 +281,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "token"
-        ]
+        "required": ["token"]
       },
       "LoginResultDataDto": {
         "type": "object",
@@ -302,9 +290,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "token"
-        ]
+        "required": ["token"]
       },
       "LoginResultDto": {
         "type": "object",
@@ -313,9 +299,7 @@
             "$ref": "#/components/schemas/LoginResultDataDto"
           }
         },
-        "required": [
-          "data"
-        ]
+        "required": ["data"]
       },
       "ApiResponseDto": {
         "type": "object",
@@ -327,10 +311,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "statusCode",
-          "message"
-        ]
+        "required": ["statusCode", "message"]
       },
       "ChapterMemberDto": {
         "type": "object",
@@ -351,12 +332,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "idUser",
-          "userFullName",
-          "userEmail",
-          "userPictureUrl"
-        ]
+        "required": ["idUser", "userFullName", "userEmail", "userPictureUrl"]
       },
       "ChapterWithMembersDto": {
         "type": "object",
@@ -374,11 +350,7 @@
             }
           }
         },
-        "required": [
-          "id",
-          "name",
-          "members"
-        ]
+        "required": ["id", "name", "members"]
       },
       "ChaptersWithMembersResultDto": {
         "type": "object",
@@ -390,9 +362,7 @@
             }
           }
         },
-        "required": [
-          "data"
-        ]
+        "required": ["data"]
       },
       "DiscussionDto": {
         "type": "object",
@@ -492,9 +462,7 @@
             }
           }
         },
-        "required": [
-          "data"
-        ]
+        "required": ["data"]
       },
       "NewSubjectDto": {
         "type": "object",
@@ -512,12 +480,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "idChapter",
-          "title",
-          "details",
-          "link"
-        ]
+        "required": ["idChapter", "title", "details", "link"]
       },
       "SubjectDto": {
         "type": "object",
@@ -571,9 +534,7 @@
             "$ref": "#/components/schemas/SubjectDto"
           }
         },
-        "required": [
-          "data"
-        ]
+        "required": ["data"]
       }
     }
   }

@@ -9,10 +9,16 @@ import { getRoutePath } from '../json-parsing/route/get-route-path';
 import { getTypesDefinitions } from '../json-parsing/types/get-types-definitions';
 import { splitOnce } from '../util/split-once';
 
+import { getProviderFile } from './provider/generate-provider-file';
 import { getJsDoc } from './utils/get-js-doc';
 import { getRouteInputsExports } from './utils/get-route-inputs-exports';
 import { getRouteModels } from './utils/get-route-models';
 import { getRouteOutputsExports } from './utils/get-route-outputs-exports';
+import {
+  writeFileToApiMockFile,
+  writeFileToApiTypeFile,
+  writeFileToControllerRoute,
+} from './write';
 
 export const generateTypesDefinitions = async (
   outPath: string,
@@ -57,25 +63,32 @@ export const generateTypesDefinitions = async (
         : `import ${maybeTypeKeyword}{ ${models.join(
             ', ',
           )} } from './../api-types';\n\n`;
-    await writeFile(
+    await writeFileToControllerRoute(
       `${controllerPath}/${routeName}.ts`,
       `/* eslint-disable */\n/* tslint:disable */\n\n${doc}\n\n${maybeImport}${routePath}\n\n${inputsExports}${outputExports}\n`,
     );
 
-    //const providerPath = `${outPath}/${controller}/provider`;
-    //await ensureDir(providerPath);
+    const providerPath = `${controllerPath}/provider`;
+    await ensureDir(providerPath);
+    const providerFile = getProviderFile(
+      routeName,
+      parameters,
+      controller,
+      bodyModel,
+    );
+    await writeFile(`${providerPath}/${routeName}.provider.ts`, providerFile);
   }
 
   if (typesDefinition.length > 0) {
-    await writeFile(
-      `${outPath}/api-types.ts`,
+    await writeFileToApiTypeFile(
+      outPath,
       `/* eslint-disable */\n/* tslint:disable */\n\n${typesDefinition}`,
     );
   }
 
   if (typesMocks.length > 0) {
-    await writeFile(
-      `${outPath}/api-types.mock.ts`,
+    await writeFileToApiMockFile(
+      outPath,
       `/* eslint-disable */\n/* tslint:disable */\n// @ts-nocheck\n\n${typesMocks}`,
     );
   }

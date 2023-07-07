@@ -78,3 +78,12 @@ export const getRoutePath = (
     ', ',
   )}): string => \`${path}\`;`;
 };
+
+export const getPathName = (parameters: Array<ApiRouteParameter>): string => {
+  const pathParameters = parameters.filter((el) => el.in === 'path');
+  if (pathParameters.length === 0) {
+    return `path`;
+  }
+
+  return `getPath`;
+};

@@ -1,5 +1,3 @@
-import { writeFile } from 'fs-extra';
-
 import swaggerJsonWithMissingRouteName from '../../tests-related/mock-data/swagger-with-missing-routename.json';
 import swaggerWithoutSuccessTypeJson from '../../tests-related/mock-data/swagger-without-success-type.json';
 import swaggerWithoutTypesJson from '../../tests-related/mock-data/swagger-without-types.json';
@@ -8,20 +6,41 @@ import { transpileRaw } from '../../tests-related/ts/transpile-raw';
 import { ValidatedOpenaApiSchema } from '../../types/swagger-schema.interfaces';
 
 import { generateTypesDefinitions } from './generate-types-definitions';
+import {
+  writeFileToApiMockFile,
+  writeFileToApiTypeFile,
+  writeFileToControllerRoute,
+} from './write';
 
-jest.mock('fs-extra');
+jest.mock('fs-extra', () => ({
+  writeFile: jest.fn(),
+  ensureDir: jest.fn(),
+}));
 
-const expectWriteFileCallToContain = (index: number, regex: RegExp): void => {
-  const rawResult = jest.mocked(writeFile).mock.calls[index][1];
+jest.mock('./write', () => ({
+  writeFileToApiTypeFile: jest.fn(),
+  writeFileToApiMockFile: jest.fn(),
+  writeFileToControllerRoute: jest.fn(),
+}));
+
+const expectWriteFileToControllerRouteCallToContain = (
+  index: number,
+  regex: RegExp,
+): void => {
+  const rawResult = jest.mocked(writeFileToControllerRoute).mock.calls[
+    index
+  ][1];
   expect(rawResult).toMatch(regex);
 };
 
-const expectToContainSuccessAndError = (
+const expectWriteFileToControllerRouteToContainSuccessAndError = (
   index: number,
   successExport: string,
   errorExport: string,
 ): void => {
-  const rawResult = jest.mocked(writeFile).mock.calls[index][1];
+  const rawResult = jest.mocked(writeFileToControllerRoute).mock.calls[
+    index
+  ][1];
   expect(rawResult).toContain(successExport);
   expect(rawResult).toContain(errorExport);
 };
@@ -41,12 +60,13 @@ describe('generateTypesDefinitions function', () => {
       endpointsCount: 5,
     });
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
-    const rawResultApiType = jest.mocked(writeFile).mock.calls[5][1] as string;
+    expect(writeFileToApiTypeFile).toHaveBeenCalledTimes(1);
+    const rawResultApiType = jest.mocked(writeFileToApiTypeFile).mock
+      .calls[0][1] as string;
 
     expect(
       rawResultApiType.startsWith(
-        '/* eslint-disable */\n/* tslint:disable */\n\n',
+        '/* eslint-disable */\n/* tslint:disable */\n',
       ),
     ).toBeTruthy();
 
@@ -139,7 +159,9 @@ describe('generateTypesDefinitions function', () => {
       'interface CreateSubjectResultDto {\n  data: SubjectDto;\n}\n',
     );
 
-    const rawResultMock = jest.mocked(writeFile).mock.calls[6][1] as string;
+    expect(writeFileToApiMockFile).toHaveBeenCalledTimes(1);
+    const rawResultMock = jest.mocked(writeFileToApiMockFile).mock
+      .calls[0][1] as string;
     expect(
       rawResultMock.startsWith(
         '/* eslint-disable */\n/* tslint:disable */\n// @ts-nocheck\n\n',
@@ -273,41 +295,41 @@ describe('generateTypesDefinitions function', () => {
   it('should export one path variable by exposed endpoint', async () => {
     await generateTypesDefinitions(outPath, json, false);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(5);
 
     const pathExportRegex =
       /(export const path = `.*`;)|(export const getPath = (.*) => `.*`;)/;
-    expectWriteFileCallToContain(0, pathExportRegex);
-    expectWriteFileCallToContain(1, pathExportRegex);
-    expectWriteFileCallToContain(2, pathExportRegex);
-    expectWriteFileCallToContain(3, pathExportRegex);
-    expectWriteFileCallToContain(4, pathExportRegex);
+    expectWriteFileToControllerRouteCallToContain(0, pathExportRegex);
+    expectWriteFileToControllerRouteCallToContain(1, pathExportRegex);
+    expectWriteFileToControllerRouteCallToContain(2, pathExportRegex);
+    expectWriteFileToControllerRouteCallToContain(3, pathExportRegex);
+    expectWriteFileToControllerRouteCallToContain(4, pathExportRegex);
   });
 
   it('should import related types for each exposed endpoint', async () => {
     await generateTypesDefinitions(outPath, json, false);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(5);
 
     const reExportingRegex = /import { .* } from '.\/..\/api-types';\n\n/;
-    expectWriteFileCallToContain(0, reExportingRegex);
-    expectWriteFileCallToContain(1, reExportingRegex);
-    expectWriteFileCallToContain(2, reExportingRegex);
-    expectWriteFileCallToContain(3, reExportingRegex);
-    expectWriteFileCallToContain(4, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(0, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(1, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(2, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(3, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(4, reExportingRegex);
   });
 
   it('should use the import type syntax for imports', async () => {
     await generateTypesDefinitions(outPath, json, true);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(5);
 
     const reExportingRegex = /import type { .* } from '.\/..\/api-types';\n\n/;
-    expectWriteFileCallToContain(0, reExportingRegex);
-    expectWriteFileCallToContain(1, reExportingRegex);
-    expectWriteFileCallToContain(2, reExportingRegex);
-    expectWriteFileCallToContain(3, reExportingRegex);
-    expectWriteFileCallToContain(4, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(0, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(1, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(2, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(3, reExportingRegex);
+    expectWriteFileToControllerRouteCallToContain(4, reExportingRegex);
   });
 
   it('should not include the api-types import', async () => {
@@ -317,10 +339,10 @@ describe('generateTypesDefinitions function', () => {
       false,
     );
 
-    expect(writeFile).toHaveBeenCalledTimes(1);
-    expect(jest.mocked(writeFile).mock.calls.join('')).not.toContain(
-      `from './../api-types';`,
-    );
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(1);
+    expect(
+      jest.mocked(writeFileToControllerRoute).mock.calls.join(''),
+    ).not.toContain(`from './../api-types';`);
   });
 
   it('should set success and error types as never', async () => {
@@ -330,9 +352,9 @@ describe('generateTypesDefinitions function', () => {
       false,
     );
 
-    expect(writeFile).toHaveBeenCalledTimes(1);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(1);
 
-    const output = jest.mocked(writeFile).mock.calls.join('');
+    const output = jest.mocked(writeFileToControllerRoute).mock.calls.join('');
 
     expect(output).toContain('export type LoginSuccess = never;');
     expect(output).toContain('export type LoginError = never;');
@@ -341,43 +363,43 @@ describe('generateTypesDefinitions function', () => {
   it('should generate jsdoc for each endpoint', async () => {
     await generateTypesDefinitions(outPath, json, false);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(5);
 
     const jsDocRegex =
       /\/\*\* .*\n.*\* method: .*\n.*\* summary: .*\n.*\* description: .*\n.*\n\n/;
-    expectWriteFileCallToContain(0, jsDocRegex);
-    expectWriteFileCallToContain(1, jsDocRegex);
-    expectWriteFileCallToContain(2, jsDocRegex);
-    expectWriteFileCallToContain(3, jsDocRegex);
-    expectWriteFileCallToContain(4, jsDocRegex);
+    expectWriteFileToControllerRouteCallToContain(0, jsDocRegex);
+    expectWriteFileToControllerRouteCallToContain(1, jsDocRegex);
+    expectWriteFileToControllerRouteCallToContain(2, jsDocRegex);
+    expectWriteFileToControllerRouteCallToContain(3, jsDocRegex);
+    expectWriteFileToControllerRouteCallToContain(4, jsDocRegex);
   });
 
   it('should export one type by response', async () => {
     await generateTypesDefinitions(outPath, json, false);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(5);
 
-    expectToContainSuccessAndError(
+    expectWriteFileToControllerRouteToContainSuccessAndError(
       0,
       'export type LoginSuccess = LoginResultDto;',
       'export type LoginError = ApiResponseDto;',
     );
-    expectToContainSuccessAndError(
+    expectWriteFileToControllerRouteToContainSuccessAndError(
       1,
       'export type GetChaptersWithMembersSuccess = ChaptersWithMembersResultDto;',
       'export type GetChaptersWithMembersError = ApiResponseDto;',
     );
-    expectToContainSuccessAndError(
+    expectWriteFileToControllerRouteToContainSuccessAndError(
       2,
       'export type GetSubjectsSuccess = SubjectsResultDto;',
       'export type GetSubjectsError = ApiResponseDto;',
     );
-    expectToContainSuccessAndError(
+    expectWriteFileToControllerRouteToContainSuccessAndError(
       3,
       'export type GetChaptersSubjectsSuccess = SubjectsResultDto;',
       'export type GetChaptersSubjectsError = ApiResponseDto;',
     );
-    expectToContainSuccessAndError(
+    expectWriteFileToControllerRouteToContainSuccessAndError(
       4,
       'export type CreateSubjectSuccess = CreateSubjectResultDto;',
       'export type CreateSubjectError = ApiResponseDto;',
@@ -387,17 +409,17 @@ describe('generateTypesDefinitions function', () => {
   it('should export the request body type if any', async () => {
     await generateTypesDefinitions(outPath, json, false);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(5);
 
     const requestBodyExportsRegex = /export type RequestBody = .*\n/;
-    expectWriteFileCallToContain(0, requestBodyExportsRegex);
+    expectWriteFileToControllerRouteCallToContain(0, requestBodyExportsRegex);
   });
 
   it('should generate valid typescript for types', async () => {
     await generateTypesDefinitions(outPath, json, false);
 
-    expect(writeFile).toHaveBeenCalledTimes(7);
-    const rawResult = jest.mocked(writeFile).mock.calls[5][1];
+    expect(writeFileToApiTypeFile).toHaveBeenCalledTimes(1);
+    const rawResult = jest.mocked(writeFileToApiTypeFile).mock.calls[0][1];
     const transpilationResult = await transpileRaw(rawResult);
     expect(transpilationResult).toHaveLength(0);
   });
@@ -410,7 +432,7 @@ describe('generateTypesDefinitions function', () => {
     );
 
     expect(console.error).toHaveBeenCalledTimes(1);
-    expect(writeFile).toHaveBeenCalledTimes(2);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(0);
   });
 
   it('should not write anything', async () => {
@@ -428,6 +450,6 @@ describe('generateTypesDefinitions function', () => {
       endpointsCount: 0,
     });
 
-    expect(writeFile).toHaveBeenCalledTimes(0);
+    expect(writeFileToControllerRoute).toHaveBeenCalledTimes(0);
   });
 });
