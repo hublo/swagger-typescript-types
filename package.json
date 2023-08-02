@@ -1,7 +1,8 @@
 {
   "name": "@hublo/swagger-typescript-types",
   "description": "Generating typescript artifacts from a remote swagger json",
-  "version": "3.3.7",
+  "version": "3.5.0",
+  "packageManager": "pnpm@8.6.11",
   "main": "index.js",
   "repository": "https://github.com/hublo/swagger-typescript-types.git",
   "license": "MIT",
