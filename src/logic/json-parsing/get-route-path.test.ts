@@ -24,7 +24,7 @@ describe('getRoutePath function', () => {
   it('should return a path constant', () => {
     const result = getRoutePath(id, routeName, '/cool/bro', []);
 
-    expect(result).toBe('export const path = `/cool/bro`;');
+    expect(result).toBe('export const path = `/cool-service/cool/bro`;');
   });
 
   it('should return a getPath function with one primitive parameter', () => {
@@ -40,7 +40,7 @@ describe('getRoutePath function', () => {
     ]);
 
     expect(result).toBe(
-      'export const getPath = (isCool: boolean): string => `/cool/${isCool}/bro`;',
+      'export const getPath = (isCool: boolean): string => `/cool-service/cool/${isCool}/bro`;',
     );
   });
 
@@ -65,7 +65,7 @@ describe('getRoutePath function', () => {
     ]);
 
     expect(result).toBe(
-      'export const getPath = (isCool: boolean, yolo?: string): string => `/cool/${isCool}/${yolo}/bro`;',
+      'export const getPath = (isCool: boolean, yolo?: string): string => `/cool-service/cool/${isCool}/${yolo}/bro`;',
     );
   });
 
@@ -82,7 +82,7 @@ describe('getRoutePath function', () => {
     ]);
 
     expect(result).toBe(
-      'export const getPath = (cool: Cool): string => `/cool/${cool}/bro`;',
+      'export const getPath = (cool: Cool): string => `/cool-service/cool/${cool}/bro`;',
     );
   });
 
@@ -102,7 +102,7 @@ describe('getRoutePath function', () => {
     ]);
 
     expect(result).toBe(
-      'export const getPath = (cool: Array<number>): string => `/cool/${cool}/bro`;',
+      'export const getPath = (cool: Array<number>): string => `/cool-service/cool/${cool}/bro`;',
     );
   });
 
@@ -122,7 +122,7 @@ describe('getRoutePath function', () => {
     ]);
 
     expect(result).toBe(
-      'export const getPath = (cool: Array<Cool>): string => `/cool/${cool}/bro`;',
+      'export const getPath = (cool: Array<Cool>): string => `/cool-service/cool/${cool}/bro`;',
     );
   });
 
@@ -141,7 +141,7 @@ describe('getRoutePath function', () => {
 
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(result).toBe(
-      'export const getPath = (cool: never): string => `/cool/${cool}/bro`;',
+      'export const getPath = (cool: never): string => `/cool-service/cool/${cool}/bro`;',
     );
   });
 
@@ -157,7 +157,7 @@ describe('getRoutePath function', () => {
 
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(result).toBe(
-      'export const getPath = (cool: never): string => `/cool/${cool}/bro`;',
+      'export const getPath = (cool: never): string => `/cool-service/cool/${cool}/bro`;',
     );
   });
 
@@ -168,6 +168,8 @@ describe('getRoutePath function', () => {
     expect(chalk.redBright).toHaveBeenCalledWith(
       `Missing path param(s). Expecting 2 bug got 0`,
     );
-    expect(result).toBe('export const path = `/cool/${story}/bro/${yolo}`;');
+    expect(result).toBe(
+      'export const path = `/cool-service/cool/${story}/bro/${yolo}`;',
+    );
   });
 });
