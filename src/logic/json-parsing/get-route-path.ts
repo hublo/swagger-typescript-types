@@ -1,9 +1,10 @@
-import { getSchemaName } from './get-schema-name';
 import {
   ApiRouteParameter,
   ApiTypeDefinition,
 } from '../../types/swagger-schema.interfaces';
 import { displayWarning } from '../cli/console/console.messages';
+
+import { getSchemaName } from './get-schema-name';
 
 const getModel = (
   operationId: string,
@@ -47,6 +48,7 @@ export const getRoutePath = (
 ): string => {
   const pathParameters = parameters.filter((el) => el.in === 'path');
   const path = rawPath.replace(/{/g, '${');
+  const serviceName = path.split('/')[1] + '-service';
 
   const urlParametersCount = (rawPath.match(/\{\w*\}/g) || []).length;
   if (urlParametersCount !== pathParameters.length) {
@@ -57,7 +59,7 @@ export const getRoutePath = (
   }
 
   if (pathParameters.length === 0) {
-    return `export const path = \`${path}\`;`;
+    return `export const path = \`/${serviceName}${path}\`;`;
   }
 
   const functionParameters = pathParameters.reduce<Array<string>>(
@@ -72,5 +74,5 @@ export const getRoutePath = (
 
   return `export const getPath = (${functionParameters.join(
     ', ',
-  )}): string => \`${path}\`;`;
+  )}): string => \`/${serviceName}${path}\`;`;
 };
