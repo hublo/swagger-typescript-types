@@ -37,8 +37,8 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
-            SONAR_TOKEN,prd/sre/sonar
-          parse-json-secrets: false
+            ,prd/sre/sonar
+          parse-json-secrets: true
 
       - uses: pnpm/action-setup@v2.2.4
         with:
@@ -66,4 +66,4 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: $SONAR_TOKEN
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
