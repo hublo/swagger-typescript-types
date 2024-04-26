@@ -7,6 +7,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions: write-all
+
+env:
+  AWS_REGION: eu-central-1
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -22,6 +27,18 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::637206260787:role/prd-github-secrets-ci
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Dump inputs from AWS Secrets Manager into environment variables
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            SONAR_TOKEN,prd/sre/sonar
+          parse-json-secrets: false
 
       - uses: pnpm/action-setup@v2.2.4
         with:
@@ -49,4 +66,4 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: $SONAR_TOKEN
