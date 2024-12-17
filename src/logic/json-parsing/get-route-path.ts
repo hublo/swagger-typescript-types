@@ -1,6 +1,7 @@
 import {
   ApiRouteParameter,
   ApiTypeDefinition,
+  Server,
 } from '../../types/swagger-schema.interfaces';
 import { displayWarning } from '../cli/console/console.messages';
 
@@ -45,11 +46,13 @@ export const getRoutePath = (
   routeName: string,
   rawPath: string,
   parameters: Array<ApiRouteParameter>,
+  servers?: Array<Server>,
 ): string => {
   const pathParameters = parameters.filter((el) => el.in === 'path');
-  const path = rawPath.replace(/{/g, '${');
+  const parameterizedPath = rawPath.replace(/{/g, '${');
 
   const urlParametersCount = (rawPath.match(/\{\w*\}/g) || []).length;
+
   if (urlParametersCount !== pathParameters.length) {
     displayWarning(
       `Missing path param(s). Expecting ${urlParametersCount} bug got ${pathParameters.length}`,
@@ -58,7 +61,16 @@ export const getRoutePath = (
   }
 
   if (pathParameters.length === 0) {
-    return `export const path = \`${path}\`;`;
+    const normalPath = `export const path = \`${parameterizedPath}\`;`;
+    if (servers && servers.length > 0) {
+      return (
+        `${normalPath}` +
+        `\nexport const fullPath = \`${
+          servers[0].url.replace(/{/g, '${') + parameterizedPath
+        }\``
+      );
+    }
+    return normalPath;
   }
 
   const functionParameters = pathParameters.reduce<Array<string>>(
@@ -71,7 +83,17 @@ export const getRoutePath = (
     [],
   );
 
-  return `export const getPath = (${functionParameters.join(
-    ', ',
-  )}): string => \`${path}\`;`;
+  const functionParametersCombined = functionParameters.join(', ');
+  const normalParameterizedPath = `export const getPath = (${functionParametersCombined}): string => \`${parameterizedPath}\`;`;
+
+  if (servers && servers.length > 0) {
+    return (
+      normalParameterizedPath +
+      `\nexport const getFullPath = (${functionParametersCombined}): string => \`${
+        servers[0].url.replace(/{/g, '${') + parameterizedPath
+      }\``
+    );
+  }
+
+  return normalParameterizedPath;
 };

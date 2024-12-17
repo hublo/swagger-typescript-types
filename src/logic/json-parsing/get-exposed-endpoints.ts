@@ -1,6 +1,7 @@
 import {
-  ValidatedOpenaApiSchema,
+  ValidatedOpenApiSchema,
   ApiRouteParameter,
+  Server,
 } from '../../types/swagger-schema.interfaces';
 
 import { BodyModel, getBodyModel } from './get-body-model';
@@ -9,6 +10,7 @@ import { getRouteResponses, RouteResponse } from './get-route-responses';
 export interface Route {
   id: string;
   summary?: string;
+  servers?: Array<Server>;
   description?: string;
   path: string;
   method: string;
@@ -18,20 +20,29 @@ export interface Route {
 }
 
 export const getExposedEndpoints = (
-  json: ValidatedOpenaApiSchema,
+  json: ValidatedOpenApiSchema,
 ): Array<Route> => {
   const routes: Array<Route> = [];
 
   for (const [path, methods] of Object.entries(json.paths)) {
     for (const [
       method,
-      { operationId, responses, summary, description, requestBody, parameters },
+      {
+        operationId,
+        responses,
+        summary,
+        description,
+        requestBody,
+        parameters,
+        servers,
+      },
     ] of Object.entries(methods)) {
       const bodyModel = getBodyModel(operationId, requestBody);
       const routeResponses = getRouteResponses(operationId, responses);
 
       routes.push({
         id: operationId,
+        servers: servers ?? json.servers,
         summary,
         description,
         path,

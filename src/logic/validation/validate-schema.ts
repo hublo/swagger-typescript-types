@@ -1,5 +1,5 @@
 import { InputSwaggerJson } from '../../types/input-swagger-json.interface';
-import { ValidatedOpenaApiSchema } from '../../types/swagger-schema.interfaces';
+import { ValidatedOpenApiSchema } from '../../types/swagger-schema.interfaces';
 import { displayWarning } from '../cli/console/console.messages';
 
 const validate = (rawJson: InputSwaggerJson): void => {
@@ -26,8 +26,8 @@ const validate = (rawJson: InputSwaggerJson): void => {
 
 export const validateSchema = async (
   rawJson: InputSwaggerJson,
-): Promise<ValidatedOpenaApiSchema> => {
+): Promise<ValidatedOpenApiSchema> => {
   validate(rawJson);
 
-  return rawJson as unknown as ValidatedOpenaApiSchema;
+  return rawJson as unknown as ValidatedOpenApiSchema;
 };

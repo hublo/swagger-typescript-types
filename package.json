@@ -7,8 +7,8 @@
   "repository": "https://github.com/hublo/swagger-typescript-types.git",
   "license": "MIT",
   "bin": {
-    "generateTypesFromUrl": "./cli/generate-types-from-url.cli.js",
-    "generateTypesFromFile": "./cli/generate-types-from-file.cli.js"
+    "generateTypesFromUrl": "./dist/cli/generate-types-from-url.cli.js",
+    "generateTypesFromFile": "./dist/cli/generate-types-from-file.cli.js"
   },
   "dependencies": {
     "@apidevtools/openapi-schemas": "^2.1.0",
