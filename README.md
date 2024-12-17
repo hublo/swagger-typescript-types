@@ -56,7 +56,7 @@ Knowing this, we can add a script to our package.json:
 The `generateTypesFromUrl` task takes two arguments:
 
 | name | description                                         | Example                                    |
-| ---- | --------------------------------------------------- | ------------------------------------------ |
+|------|-----------------------------------------------------|--------------------------------------------|
 | u    | The url of the json exposed by the targeted swagger | <https://devfriends-backend.fly.dev/-json> |
 | o    | Where to write our exposed types                    | ./src/api/types                            |
 
@@ -92,7 +92,7 @@ We can also generate types from a file:
 The `generateTypesFromUrl` task takes two arguments:
 
 | name | description                       | Example              |
-| ---- | --------------------------------- | -------------------- |
+|------|-----------------------------------|----------------------|
 | i    | The path of the swagger json file | ./specs/swagger.json |
 | o    | Where to write our exposed types  | ./src/api/types      |
 
@@ -195,7 +195,7 @@ This function generates types from a swagger exposed online. Typical use:
 ```typescript
 const params = {
   swaggerJsonUrl: 'https://devfriends-backend.fly.dev/-json',
-  outputPath './src/specs',
+  outputPath: './src/specs',
   importsNotUsedAsValues: false
 };
 
@@ -212,7 +212,7 @@ This function generates types from a swagger json file. Typical use:
 ```typescript
 const params = {
   inputPath: './src/api/swagger.json',
-  outputPath './src/specs',
+  outputPath: './src/specs',
   importsNotUsedAsValues: false
 };
 
@@ -224,7 +224,7 @@ const {
 
 #### 🌀 validateSchema
 
-This function validates some arbitrary json against the [openapiv3 schema](https://github.com/APIDevTools/openapi-schemas). Typically use:
+This function validates some arbitrary json against the [openapiv3 schema](https://github.com/APIDevTools/openapi-schemas). Typically, use:
 
 ```typescript
 const json: InputSwaggerJson = { ... };

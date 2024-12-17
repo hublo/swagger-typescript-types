@@ -5,7 +5,7 @@ import swaggerWithoutSuccessTypeJson from '../../tests-related/mock-data/swagger
 import swaggerWithoutTypesJson from '../../tests-related/mock-data/swagger-without-types.json';
 import swaggerJson from '../../tests-related/mock-data/swagger.json';
 import { transpileRaw } from '../../tests-related/ts/transpile-raw';
-import { ValidatedOpenaApiSchema } from '../../types/swagger-schema.interfaces';
+import { ValidatedOpenApiSchema } from '../../types/swagger-schema.interfaces';
 
 import { generateTypesDefinitions } from './generate-types-definitions';
 
@@ -28,7 +28,7 @@ const expectToContainSuccessAndError = (
 
 describe('generateTypesDefinitions function', () => {
   global.console = { error: jest.fn() } as unknown as Console;
-  const json = swaggerJson as unknown as ValidatedOpenaApiSchema;
+  const json = swaggerJson as unknown as ValidatedOpenApiSchema;
   const outPath = './src/api';
 
   beforeEach(() => jest.clearAllMocks());
@@ -313,7 +313,7 @@ describe('generateTypesDefinitions function', () => {
   it('should not include the api-types import', async () => {
     await generateTypesDefinitions(
       outPath,
-      swaggerWithoutTypesJson as unknown as ValidatedOpenaApiSchema,
+      swaggerWithoutTypesJson as unknown as ValidatedOpenApiSchema,
       false,
     );
 
@@ -326,7 +326,7 @@ describe('generateTypesDefinitions function', () => {
   it('should set success and error types as never', async () => {
     await generateTypesDefinitions(
       outPath,
-      swaggerWithoutSuccessTypeJson as unknown as ValidatedOpenaApiSchema,
+      swaggerWithoutSuccessTypeJson as unknown as ValidatedOpenApiSchema,
       false,
     );
 
@@ -405,7 +405,7 @@ describe('generateTypesDefinitions function', () => {
   it('should display a warning if route has no name', async () => {
     await generateTypesDefinitions(
       outPath,
-      swaggerJsonWithMissingRouteName as unknown as ValidatedOpenaApiSchema,
+      swaggerJsonWithMissingRouteName as unknown as ValidatedOpenApiSchema,
       false,
     );
 

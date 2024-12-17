@@ -1,7 +1,7 @@
 import { ensureDir, writeFile } from 'fs-extra';
 
 import { GenerationResult } from '../../types/generation-result.interface';
-import { ValidatedOpenaApiSchema } from '../../types/swagger-schema.interfaces';
+import { ValidatedOpenApiSchema } from '../../types/swagger-schema.interfaces';
 import { displayWarning } from '../cli/console/console.messages';
 import { getExposedEndpoints } from '../json-parsing/get-exposed-endpoints';
 import { getRoutePath } from '../json-parsing/get-route-path';
@@ -16,7 +16,7 @@ import { getRouteOutputsExports } from './get-route-outputs-exports';
 
 export const generateTypesDefinitions = async (
   outPath: string,
-  json: ValidatedOpenaApiSchema,
+  json: ValidatedOpenApiSchema,
   importsNotUsedAsValues: boolean,
 ): Promise<GenerationResult> => {
   const typesDefinition = getTypesDefinitions(json.components.schemas);
@@ -27,6 +27,7 @@ export const generateTypesDefinitions = async (
   for (const {
     id,
     path: rawPath,
+    servers,
     method,
     summary,
     description,
@@ -44,7 +45,7 @@ export const generateTypesDefinitions = async (
     await ensureDir(controllerPath);
 
     const models = getRouteModels(responses, parameters, bodyModel);
-    const routePath = getRoutePath(id, routeName, rawPath, parameters);
+    const routePath = getRoutePath(id, routeName, rawPath, parameters, servers);
     const inputsExports = getRouteInputsExports(bodyModel);
     const outputExports = getRouteOutputsExports(routeName, responses);
     const doc = getJsDoc(id, method, summary, description);
