@@ -61,9 +61,3 @@ jobs:
 
       - name: Tests
         run: pnpm test-ci
-
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
