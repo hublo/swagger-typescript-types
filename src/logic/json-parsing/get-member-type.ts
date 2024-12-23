@@ -39,7 +39,13 @@ export const getMemberType = (
         .join(' | ');
     }
 
-    return mapZodTypes(property.type);
+    const zodType = mapZodTypes(property.type);
+
+    if (property.nullable) {
+      return `${zodType} | null`;
+    }
+
+    return zodType;
   }
 
   displayWarning(
