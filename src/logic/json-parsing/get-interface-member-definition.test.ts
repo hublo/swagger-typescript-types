@@ -159,7 +159,7 @@ describe('getInterfaceMemberDefinition function', () => {
       ['status'],
       {
         type: 'number',
-        enum: [0, 1, 2],
+        enum: ['0', '1', '2'],
       },
       true,
     );
@@ -187,7 +187,7 @@ describe('getInterfaceMemberDefinition function', () => {
       ['status'],
       {
         type: 'string',
-        enum: [0, 'a string value', 2],
+        enum: ['0', 'a string value', '2'],
       },
       true,
     );
