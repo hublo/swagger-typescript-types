@@ -118,7 +118,7 @@ describe('generateTypesDefinitions function', () => {
       'interface NewSubjectDto {\n' +
         '  idChapter: number;\n' +
         '  title: string;\n' +
-        '  details: string;\n' +
+        '  details: string | null;\n' +
         '  link: string;\n' +
         '}\n',
     );

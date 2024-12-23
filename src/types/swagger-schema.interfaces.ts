@@ -72,4 +72,5 @@ export interface ApiTypeDefinition {
     | string
     | number
     | boolean;
+  nullable?: boolean;
 }

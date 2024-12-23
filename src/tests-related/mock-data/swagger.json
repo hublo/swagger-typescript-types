@@ -506,7 +506,8 @@
             "type": "string"
           },
           "details": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "link": {
             "type": "string"
