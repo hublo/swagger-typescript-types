@@ -418,7 +418,7 @@ describe('generateTypesDefinitions function', () => {
       outPath,
       {
         components: { schemas: {} },
-        paths: [],
+        paths: {},
       },
       false,
     );
