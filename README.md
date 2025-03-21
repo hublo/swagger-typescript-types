@@ -177,10 +177,14 @@ Now let's check an [endpoint](https://devfriends-backend.fly.dev/#/squads/Squads
 import { SquadsDevelopersResultDto, BadRequestDto, ApiResponseDto } from './../api-types';
 
 export const getPath = (id: number): string => `/squads/${id}/devs`;
+export const getFullPath = (id: number): string => `${SERVICE_BASE_URL}/squads/${id}/devs`;
 
 export type GetSquadsDevelopersSuccess = SquadsDevelopersResultDto;
 export type GetSquadsDevelopersError = BadRequestDto | ApiResponseDto;
 ```
+
+The `getFullPath` function is generated only if the Swagger schema includes `servers`,
+and it derives the full path based on the first server entry.
 
 ## ⚡ Api
 
