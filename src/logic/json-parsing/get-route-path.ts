@@ -63,11 +63,17 @@ export const getRoutePath = (
   if (pathParameters.length === 0) {
     const normalPath = `export const path = \`${parameterizedPath}\`;`;
     if (servers && servers.length > 0) {
+      let url = servers[0].url;
+      const variables = servers[0].variables || {};
+      for (const variable in variables) {
+        url = url.replace(
+          `{${variable}}`,
+          `\${${variable} || '${variables[variable].default}'}`,
+        );
+      }
       return (
         `${normalPath}` +
-        `\nexport const fullPath = \`${
-          servers[0].url.replace(/{/g, '${') + parameterizedPath
-        }\``
+        `\nexport const fullPath = \`${url + parameterizedPath}\``
       );
     }
     return normalPath;
@@ -87,10 +93,18 @@ export const getRoutePath = (
   const normalParameterizedPath = `export const getPath = (${functionParametersCombined}): string => \`${parameterizedPath}\`;`;
 
   if (servers && servers.length > 0) {
+    let url = servers[0].url;
+    const variables = servers[0].variables || {};
+    for (const variable in variables) {
+      url = url.replace(
+        `{${variable}}`,
+        `\${${variable} || '${variables[variable].default}'}`,
+      );
+    }
     return (
       normalParameterizedPath +
       `\nexport const getFullPath = (${functionParametersCombined}): string => \`${
-        servers[0].url.replace(/{/g, '${') + parameterizedPath
+        url + parameterizedPath
       }\``
     );
   }
