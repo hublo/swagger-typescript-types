@@ -2,7 +2,7 @@ import { generateTypesDefinitions } from './logic/ts-generation/generate-types-d
 import { validateSchema } from './logic/validation/validate-schema';
 import { GenerationResult } from './types/generation-result.interface';
 import { InputSwaggerJson } from './types/input-swagger-json.interface';
-import { ValidatedOpenaApiSchema } from './types/swagger-schema.interfaces';
+import { ValidatedOpenApiSchema } from './types/swagger-schema.interfaces';
 import {
   generateTypesFromFile,
   GenerateTypesFromFileArguments,
@@ -21,7 +21,7 @@ export {
 
 export type {
   InputSwaggerJson,
-  ValidatedOpenaApiSchema,
+  ValidatedOpenApiSchema,
   GenerateTypesFromUrlArguments,
   GenerateTypesFromFileArguments,
   GenerationResult,

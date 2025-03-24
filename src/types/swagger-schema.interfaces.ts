@@ -1,9 +1,22 @@
-export interface ValidatedOpenaApiSchema {
-  paths: Array<ApiPath>;
+export interface ValidatedOpenApiSchema {
+  paths: Record<string, ApiPath>;
   components: {
     schemas: ApiSchemas;
   };
+  servers?: Array<Server>;
 }
+
+type ServerVariable = {
+  default: string;
+  enum?: Array<string>;
+  description?: string;
+};
+
+export type Server = {
+  url: string;
+  description?: string;
+  variables?: Record<string, ServerVariable>;
+};
 
 type Verbs = 'get' | 'post' | 'put' | 'delete';
 
@@ -13,6 +26,7 @@ type ApiPath = {
 
 interface ApiOperation {
   operationId: string;
+  servers?: Array<Server>;
   summary: string;
   description: string;
   parameters: Array<ApiRouteParameter>;
