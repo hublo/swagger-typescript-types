@@ -170,4 +170,44 @@ describe('getRoutePath function', () => {
     );
     expect(result).toBe('export const path = `/cool/${story}/bro/${yolo}`;');
   });
+
+  it('should add @deprecated JSDoc to getPath and getFullPath when deprecated is true', () => {
+    const result = getRoutePath(
+      id,
+      routeName,
+      '/cool/{id}/bro',
+      [
+        {
+          in: 'path',
+          name: 'id',
+          required: true,
+          schema: { type: 'string' },
+        },
+      ],
+      [
+        {
+          url: 'https://api.example.com',
+        },
+      ],
+      true,
+    );
+
+    expect(result).toContain('/** @deprecated */\nexport const getPath = ');
+    expect(result).toContain(
+      '\n/** @deprecated */\nexport const getFullPath = ',
+    );
+  });
+
+  it('should add @deprecated JSDoc to path when deprecated is true and no path params', () => {
+    const result = getRoutePath(
+      id,
+      routeName,
+      '/cool/bro',
+      [],
+      undefined,
+      true,
+    );
+
+    expect(result).toBe('/** @deprecated */\nexport const path = `/cool/bro`;');
+  });
 });

@@ -31,6 +31,7 @@ export const generateTypesDefinitions = async (
     method,
     summary,
     description,
+    deprecated,
     parameters,
     bodyModel,
     responses,
@@ -45,10 +46,17 @@ export const generateTypesDefinitions = async (
     await ensureDir(controllerPath);
 
     const models = getRouteModels(responses, parameters, bodyModel);
-    const routePath = getRoutePath(id, routeName, rawPath, parameters, servers);
+    const routePath = getRoutePath(
+      id,
+      routeName,
+      rawPath,
+      parameters,
+      servers,
+      deprecated,
+    );
     const inputsExports = getRouteInputsExports(bodyModel);
     const outputExports = getRouteOutputsExports(routeName, responses);
-    const doc = getJsDoc(id, method, summary, description);
+    const doc = getJsDoc(id, method, summary, description, deprecated);
 
     endpointsCount++;
     const maybeTypeKeyword = importsNotUsedAsValues ? 'type ' : '';

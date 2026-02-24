@@ -5,6 +5,7 @@ export const getJsDoc = (
   method: string,
   summary?: string,
   description?: string,
+  deprecated?: boolean,
 ): string => {
   let doc = `/** ${splitOnce(id, '_')[1]}\n * method: ${method}\n`;
   if (summary) {
@@ -12,6 +13,9 @@ export const getJsDoc = (
   }
   if (description) {
     doc += ` * description: ${description}\n`;
+  }
+  if (deprecated) {
+    doc += ' * @deprecated\n';
   }
 
   doc += ' */';

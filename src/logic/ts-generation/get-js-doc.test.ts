@@ -27,4 +27,28 @@ describe('getJsDoc', () => {
 
     expect(result).toMatch(/.*\* description: Heeho let's go\n.*/);
   });
+
+  it('should add @deprecated when deprecated is true', () => {
+    const result = getJsDoc(
+      'UserController_getName',
+      'GET',
+      undefined,
+      undefined,
+      true,
+    );
+
+    expect(result).toContain(' * @deprecated\n');
+  });
+
+  it('should not add @deprecated when deprecated is false', () => {
+    const result = getJsDoc(
+      'UserController_getName',
+      'GET',
+      undefined,
+      undefined,
+      false,
+    );
+
+    expect(result).not.toContain('@deprecated');
+  });
 });
