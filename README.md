@@ -1,6 +1,7 @@
 # swagger-typescript-types
 
 Generating typescript types from swagger.
+
 ## ⚡ Purpose
 
 Here is a little utility to generate typescript artifacts from swagger. This can be useful when you want to sync types between your backend and your frontend.
@@ -56,7 +57,7 @@ Knowing this, we can add a script to our package.json:
 The `generateTypesFromUrl` task takes two arguments:
 
 | name | description                                         | Example                                    |
-|------|-----------------------------------------------------|--------------------------------------------|
+| ---- | --------------------------------------------------- | ------------------------------------------ |
 | u    | The url of the json exposed by the targeted swagger | <https://devfriends-backend.fly.dev/-json> |
 | o    | Where to write our exposed types                    | ./src/api/types                            |
 
@@ -92,7 +93,7 @@ We can also generate types from a file:
 The `generateTypesFromUrl` task takes two arguments:
 
 | name | description                       | Example              |
-|------|-----------------------------------|----------------------|
+| ---- | --------------------------------- | -------------------- |
 | i    | The path of the swagger json file | ./specs/swagger.json |
 | o    | Where to write our exposed types  | ./src/api/types      |
 
@@ -200,12 +201,12 @@ This function generates types from a swagger exposed online. Typical use:
 const params = {
   swaggerJsonUrl: 'https://devfriends-backend.fly.dev/-json',
   outputPath: './src/specs',
-  importsNotUsedAsValues: false
+  importsNotUsedAsValues: false,
 };
 
 const {
   typesGenerated, // boolean, specifies whether types have been extracted (./api-types.ts file)
-  endpointsCount  // number of endpoints extracted
+  endpointsCount, // number of endpoints extracted
 }: GenerationResult = await generateTypesFromUrl(params);
 ```
 
@@ -217,12 +218,12 @@ This function generates types from a swagger json file. Typical use:
 const params = {
   inputPath: './src/api/swagger.json',
   outputPath: './src/specs',
-  importsNotUsedAsValues: false
+  importsNotUsedAsValues: false,
 };
 
 const {
   typesGenerated, // boolean, specifies whether types have been extracted (./api-types.ts file)
-  endpointsCount  // number of endpoints extracted
+  endpointsCount, // number of endpoints extracted
 }: GenerationResult = await generateTypesFromFile(params);
 ```
 
@@ -247,3 +248,21 @@ const importsNotUsedAsValues = true
 
 await generateTypesDefinitions(outPath, schema, importsNotUsedAsValues);
 ```
+
+## ⚡ Publishing
+
+To publish the package to npm:
+
+1. Bump the package version
+
+2. Build the package:
+
+   ```bash
+   pnpm build
+   ```
+
+3. Publish the package to npm:
+
+   ```bash
+   npm publish
+   ```
