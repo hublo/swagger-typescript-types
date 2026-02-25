@@ -41,15 +41,19 @@ const getModel = (
   return 'never';
 };
 
+const deprecatedJsdoc = '/** @deprecated */\n';
+
 export const getRoutePath = (
   id: string,
   routeName: string,
   rawPath: string,
   parameters: Array<ApiRouteParameter>,
   servers?: Array<Server>,
+  deprecated?: boolean,
 ): string => {
   const pathParameters = parameters.filter((el) => el.in === 'path');
   const parameterizedPath = rawPath.replace(/{/g, '${');
+  const dep = deprecated ? deprecatedJsdoc : '';
 
   const urlParametersCount = (rawPath.match(/\{\w*\}/g) || []).length;
 
@@ -61,7 +65,7 @@ export const getRoutePath = (
   }
 
   if (pathParameters.length === 0) {
-    const normalPath = `export const path = \`${parameterizedPath}\`;`;
+    const normalPath = `${dep}export const path = \`${parameterizedPath}\`;`;
     if (servers && servers.length > 0) {
       let url = servers[0].url;
       const variables = servers[0].variables || {};
@@ -73,7 +77,7 @@ export const getRoutePath = (
       }
       return (
         `${normalPath}` +
-        `\nexport const fullPath = \`${url + parameterizedPath}\``
+        `\n${dep}export const fullPath = \`${url + parameterizedPath}\``
       );
     }
     return normalPath;
@@ -90,7 +94,7 @@ export const getRoutePath = (
   );
 
   const functionParametersCombined = functionParameters.join(', ');
-  const normalParameterizedPath = `export const getPath = (${functionParametersCombined}): string => \`${parameterizedPath}\`;`;
+  const normalParameterizedPath = `${dep}export const getPath = (${functionParametersCombined}): string => \`${parameterizedPath}\`;`;
 
   if (servers && servers.length > 0) {
     let url = servers[0].url;
@@ -103,7 +107,7 @@ export const getRoutePath = (
     }
     return (
       normalParameterizedPath +
-      `\nexport const getFullPath = (${functionParametersCombined}): string => \`${
+      `\n${dep}export const getFullPath = (${functionParametersCombined}): string => \`${
         url + parameterizedPath
       }\``
     );

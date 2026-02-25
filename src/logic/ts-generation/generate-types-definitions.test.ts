@@ -430,4 +430,37 @@ describe('generateTypesDefinitions function', () => {
 
     expect(writeFile).toHaveBeenCalledTimes(0);
   });
+
+  it('should add @deprecated JSDoc when route is deprecated', async () => {
+    const deprecatedRouteSchema = {
+      components: { schemas: {} },
+      paths: {
+        '/deprecated/route': {
+          get: {
+            operationId: 'TestController_getDeprecated',
+            summary: 'Deprecated route',
+            description: 'This route is deprecated',
+            deprecated: true,
+            parameters: [],
+            requestBody: { required: false, content: {} },
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {},
+              },
+            },
+          },
+        },
+      },
+    } as unknown as ValidatedOpenApiSchema;
+
+    await generateTypesDefinitions(outPath, deprecatedRouteSchema, false);
+
+    expect(writeFile).toHaveBeenCalledTimes(1);
+    const generatedContent = jest.mocked(writeFile).mock.calls[0][1] as string;
+    expect(generatedContent).toContain(' * @deprecated\n');
+    expect(generatedContent).toContain(
+      '/** @deprecated */\nexport const path = ',
+    );
+  });
 });

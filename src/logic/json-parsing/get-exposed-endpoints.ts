@@ -7,11 +7,22 @@ import {
 import { BodyModel, getBodyModel } from './get-body-model';
 import { getRouteResponses, RouteResponse } from './get-route-responses';
 
+const HTTP_METHODS = new Set([
+  'get',
+  'post',
+  'put',
+  'delete',
+  'patch',
+  'options',
+  'head',
+]);
+
 export interface Route {
   id: string;
   summary?: string;
   servers?: Array<Server>;
   description?: string;
+  deprecated?: boolean;
   path: string;
   method: string;
   parameters: Array<ApiRouteParameter>;
@@ -24,19 +35,21 @@ export const getExposedEndpoints = (
 ): Array<Route> => {
   const routes: Array<Route> = [];
 
-  for (const [path, methods] of Object.entries(json.paths)) {
-    for (const [
-      method,
-      {
+  for (const [path, pathItem] of Object.entries(json.paths)) {
+    for (const [method, operation] of Object.entries(pathItem)) {
+      if (!HTTP_METHODS.has(method)) {
+        continue;
+      }
+      const {
         operationId,
         responses,
         summary,
         description,
+        deprecated,
         requestBody,
         parameters,
         servers,
-      },
-    ] of Object.entries(methods)) {
+      } = operation;
       const bodyModel = getBodyModel(operationId, requestBody);
       const routeResponses = getRouteResponses(operationId, responses);
 
@@ -45,6 +58,7 @@ export const getExposedEndpoints = (
         servers: servers ?? json.servers,
         summary,
         description,
+        deprecated,
         path,
         method,
         parameters,

@@ -29,6 +29,7 @@ interface ApiOperation {
   servers?: Array<Server>;
   summary: string;
   description: string;
+  deprecated?: boolean;
   parameters: Array<ApiRouteParameter>;
   requestBody: ApiContent & { required: boolean };
   responses: {
