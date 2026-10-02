@@ -11,22 +11,22 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
+        uses: styfle/cancel-workflow-action@b173b6ec0100793626c2d9e6b90435061f4fc3e5 # 0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
         with:
           version: 8.6.11
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: '.node-version'
           registry-url: 'https://registry.npmjs.org'
@@ -39,11 +39,11 @@ jobs:
         run: pnpm test-ci
 
       - name: Generating coverage badges
-        uses: jpb06/jest-badges-action@v1.9.5
+        uses: jpb06/jest-badges-action@cae3fe030a5fcca04225e9d1b05ce7c6c00a2959 # v1.9.5
 
       - name: Bump package version
         id: bumping-version
-        uses: jpb06/bump-package@v2.5.8
+        uses: jpb06/bump-package@4c3196cad771e9ab4c6e93c686329ed58fde1bd3 # v2.5.8
         with:
           major-keywords: BREAKING CHANGE
           minor-keywords: feat,minor
